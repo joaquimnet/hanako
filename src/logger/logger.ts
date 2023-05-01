@@ -8,6 +8,7 @@ interface HanakoLoggingOptions {
   environment?: string;
   app: string;
   hanakoServer: string;
+  apiKey: string;
 }
 
 export function createLogger(options: HanakoLoggingOptions) {
@@ -23,7 +24,7 @@ export function createLogger(options: HanakoLoggingOptions) {
 
   const host = serverUrlParsed.hostname;
   const port: number | undefined = serverUrlParsed.port ? parseInt(serverUrlParsed.port) : undefined;
-  const path = serverUrlParsed.pathname;
+  const path = '/logs';
 
   const mode = options?.mode || MODE.DEVELOPMENT;
 
@@ -46,6 +47,9 @@ export function createLogger(options: HanakoLoggingOptions) {
         batchInterval: 5000,
         batchCount: 10,
         batch: true,
+        auth: {
+          bearer: options.apiKey,
+        },
       }),
     );
   }
